@@ -10,7 +10,11 @@ Use the package manager [pip](https://pypi.org/project/getjob/1.0/) to install g
 pip install getjob
 ```
 ## Requirements
-python <= 2.7
+* python <= 2.7
+* smtplib
+* ssl
+* csv
+* json
 ## Usage
 
 ### Module Import
