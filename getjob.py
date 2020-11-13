@@ -5,7 +5,6 @@
 """
 import csv
 from datetime import datetime
-from email import message
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -27,10 +26,32 @@ class GetJob():
     self.doc_path = doc_path
     
   def send(self):
-    #print self.profile['name']
     mails_data = self._parse_csv(self.bulk_path)
+    print ("Total mails to send: %s" % len(mails_data))
+    print ("Time: %s" % datetime.now())    
+    #number of fails
+    failed = 0
     for data in mails_data:
-      print self._config_mail(data)
+      message = self._config_mail(data)
+      # Send email
+      context = ssl.create_default_context()
+      #python 3
+      #smtp_server = smtplib.SMTP_SSL(host=self.profile['smtp']['server'], port=self.profile['smtp']['port'], context=context)
+      #python 2
+      smtp_server = smtplib.SMTP(host=self.profile['smtp']['server'], port=self.profile['smtp']['port'])
+      smtp_server.connect(self.profile['smtp']['server'], 465)
+      try:
+        smtp_server.login(self.profile['mail'], self.profile['smtp']['password'])
+        #python 2
+        smtp_server.ehlo()
+        smtp_server.starttls(context=context)
+        smtp_server.ehlo()
+        smtp_server.sendmail(self.profile['mail'], data[2], message)
+        #Sleep for .25 secs to take load off the SMTP server
+        sleep(0.25)
+      except IOError:
+        failed = failed + 1
+        print "Failed to send: %s" % failed
       
   def _config_mail(self, data):
     #header format mail
@@ -42,7 +63,7 @@ class GetJob():
     message["Subject"] = self._lang(data[5], data[1])
     message["Bcc"] = to  # Recommended for mass emails
     #Body
-    if data[6] == '0':
+    if data[6] == '0': 
       text = self._replace_str(data, self.sms_path+data[3]+"_"+data[5]+".txt")
       type = "plain"
     else:
@@ -65,8 +86,7 @@ class GetJob():
     #Attach and convert message in string
     message.attach(doc)
     return message.as_string()
-  def _parse_html(self, html):
-    return "hola"
+  
   def _replace_str(self, data, file):
     try:
       with open(file, 'rwb') as text_file:
@@ -78,6 +98,7 @@ class GetJob():
           "[phone]": self.profile['phone'], 
           "[link]": self.profile['link']
         }  
+        text_file.close()
         return self._replace(read_file, rep)
     except IOError:
       raise IOError("Error template mail path")
@@ -112,7 +133,8 @@ class GetJob():
     for i, rowi in enumerate(bulk_reader):
       for j, rowj in enumerate(bulk_headlings):
         bulk_headlings[j] = rowi[j]
-      bulk_list.append(bulk_headlings)
+      bulk_list.append(bulk_headlings[:len(bulk_headlings)])
+    bulk_file.close()  
     return bulk_list
   
 def main(sys_args):
