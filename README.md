@@ -1,4 +1,4 @@
-# Getjob: Automation application jobs
+# Getjob: Automate to jobs applications
 
 This code is to send emails with different contexts depending on company info, language, postulation job, and recruiter info.
 
