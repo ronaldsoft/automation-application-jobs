@@ -42,7 +42,14 @@ class GetJob():
     message["Subject"] = self._lang(data[5], data[1])
     message["Bcc"] = to  # Recommended for mass emails
     #Body
-    message.attach(MIMEText("hi", "plain"))    
+    if data[6] == '0':
+      text = self._replace_str(data, self.sms_path+data[3]+"_"+data[5]+".txt")
+      type = "plain"
+    else:
+      text = self._replace_str(data, self.sms_path+data[3]+"_"+data[5]+".html")
+      type = "html"
+      
+    message.attach(MIMEText(text, type))    
     #PDF file in binary mode
     with open(self.doc_path, "rb") as attach:
       #define mime type
@@ -58,15 +65,36 @@ class GetJob():
     #Attach and convert message in string
     message.attach(doc)
     return message.as_string()
-  
+  def _parse_html(self, html):
+    return "hola"
+  def _replace_str(self, data, file):
+    try:
+      with open(file, 'rwb') as text_file:
+        read_file = text_file.read()
+        rep = {
+          "[name]": data[0], 
+          "[position]": data[1], 
+          "[sender]": self.profile['name'], 
+          "[phone]": self.profile['phone'], 
+          "[link]": self.profile['link']
+        }  
+        return self._replace(read_file, rep)
+    except IOError:
+      raise IOError("Error template mail path")
+    
+  #ref: https://stackoverflow.com/questions/6116978/how-to-replace-multiple-substrings-of-a-string  
+  def _replace(self, string, rep_dict):
+    pattern = re.compile("|".join([re.escape(k) for k in sorted(rep_dict, key=len, reverse=True)]), flags=re.DOTALL)
+    return pattern.sub(lambda x: rep_dict[x.group(0)], string)
+    
   def count_recipients(self, bulk_path = None):
     return len(self._parse_csv(bulk_path))
   
   def _lang(self, l, pos):
     if l == "en":
-      return "Application for %s" % pos
+      return self.profile['lang'][l] + " " + pos
     else:
-      return "Applicacion al trabajo %s" % pos
+      return self.profile['lang'][l] + " " + pos
      
   def _parse_csv(self, bulk_path = None):
     """
