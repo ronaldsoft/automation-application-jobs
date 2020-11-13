@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Netbeans
+nb-configuration.xml
+#MacOS
+.DS_Store
