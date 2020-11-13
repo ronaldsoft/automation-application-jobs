@@ -35,17 +35,19 @@ class GetJob():
       message = self._config_mail(data)
       # Send email
       context = ssl.create_default_context()
-      #python 3
-      #smtp_server = smtplib.SMTP_SSL(host=self.profile['smtp']['server'], port=self.profile['smtp']['port'], context=context)
-      #python 2
-      smtp_server = smtplib.SMTP(host=self.profile['smtp']['server'], port=self.profile['smtp']['port'])
-      smtp_server.connect(self.profile['smtp']['server'], 465)
       try:
-        smtp_server.login(self.profile['mail'], self.profile['smtp']['password'])
         #python 2
-        smtp_server.ehlo()
-        smtp_server.starttls(context=context)
-        smtp_server.ehlo()
+        if(sys.version_info[0] == 2):
+          smtp_server = smtplib.SMTP(self.profile['smtp']['server'], self.profile['smtp']['port'])
+          smtp_server.ehlo()
+          smtp_server.starttls()
+          smtp_server.ehlo()
+        else:
+          #python 3
+          smtp_server = smtplib.SMTP_SSL(host=self.profile['smtp']['server'], port=self.profile['smtp']['port'], context=context)
+          smtp_server.starttls(context)
+          
+        smtp_server.login(self.profile['mail'], self.profile['smtp']['password'])
         smtp_server.sendmail(self.profile['mail'], data[2], message)
         #Sleep for .25 secs to take load off the SMTP server
         sleep(0.25)
@@ -81,7 +83,7 @@ class GetJob():
     # Add header
     doc.add_header(
       "Content-Disposition",
-      "attachment; filename= %s" % self.doc_path,
+      "attachment; filename= %s" % (self._lang('re_'+data[5], self.profile['name']) + os.path.splitext(self.doc_path)[1]),
     )
     #Attach and convert message in string
     message.attach(doc)
