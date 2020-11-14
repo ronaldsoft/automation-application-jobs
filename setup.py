@@ -1,4 +1,10 @@
+import os, codecs
 from setuptools import setup, find_packages
+
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
 
 long_description = read('README.md')
 setup (
@@ -12,6 +18,7 @@ setup (
        author_email='ronaldsoft8423@gmail.com',
        url='https://github.com/ronaldsoft/getjob',
        long_description=long_description,
+       long_description_content_type="text/markdown",
        keywords = ['jobs', 'work', 'recruiter'],
        include_package_data=True,
         classifiers=[
