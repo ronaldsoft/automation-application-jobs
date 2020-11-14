@@ -11,10 +11,7 @@ pip install getjob
 ```
 ## Requirements
 * python <= 2.7
-* smtplib
-* ssl
-* csv
-* json
+
 ## Usage
 
 ### Module Import

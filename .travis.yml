@@ -14,4 +14,5 @@ install:
   - pip3 install getjob
 # command to run tests
 script:
-  - ./getjob.py test/profile.json test/sms/ test/bulk.csv test/resume.pdf
+  # - ./getjob.py test/profile.json test/sms/ test/bulk.csv test/resume.pdf
+  - python setup.py test

@@ -6,7 +6,7 @@ setup (
        packages=find_packages(),
        license='GNUv3.0',
        # Declare your packages' dependencies here, for eg:
-       install_requires=['email', 'csv', 'json', 'smtplib', 'ssl'],
+       install_requires=[''],
        author='Ronald Rivera',
        author_email='ronaldsoft8423@gmail.com',
        url='https://github.com/ronaldsoft/getjob',
@@ -18,7 +18,6 @@ setup (
           'Intended Audience :: Developers',      # Define that your audience are developers
           'Topic :: Software Development :: Build Tools',
           'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',   # Again, pick a license
-          'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',      #Specify which pyhton versions that you want to support
           'Programming Language :: Python :: 3.4',
