@@ -1,5 +1,6 @@
 # Getjob: Automate to jobs applications
 [![Build Status](https://travis-ci.org/ronaldsoft/getjob.svg?branch=master)](https://travis-ci.org/ronaldsoft/getjob)
+
 This code is to send emails with different contexts depending on company info, language, postulation job, and recruiter info.
 
 ## Installation
