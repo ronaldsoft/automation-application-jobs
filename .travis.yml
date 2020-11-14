@@ -10,8 +10,8 @@ python:
   - "nightly"  # nightly build
 # command to install dependencies
 install:
-  - pip install getjob
-  - pip3 install getjob
+  - pip install getjobs
+  - pip3 install getjobs
 # command to run tests
 script:
   # - ./getjob.py test/profile.json test/sms/ test/bulk.csv test/resume.pdf
