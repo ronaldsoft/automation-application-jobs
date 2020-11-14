@@ -4,10 +4,10 @@ This code is to send emails with different contexts depending on company info, l
 
 ## Installation
 
-Use the package manager [pip](https://pypi.org/project/getjob/1.0/) to install getjob
+Use the package manager [pip](https://pypi.org/project/getjobs/) to install getjob
 
 ```bash
-pip install getjob
+pip install getjobs
 ```
 ## Requirements
 * python <= 2.7
@@ -16,7 +16,7 @@ pip install getjob
 
 ### Module Import
 ```python
-from getjob import GetJob
+from getjobs import GetJob
 
 #sent mail
 mail = GetJob(profile, sms_path, bulk_path, doc_path) #replace values to paths

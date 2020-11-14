@@ -8,9 +8,9 @@ def read(rel_path):
 
 long_description = read('README.md')
 setup (
-       name='getjob',
-       version='1.0',
-       packages = ['getjob'],
+       name='getjobs',
+       version='1.1',
+       packages = ['getjobs'],
        license='GNUv3.0',
        # Declare your packages' dependencies here, for eg:
        install_requires=[''],
