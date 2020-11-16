@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
 import re
+import codecs
 import json
 import ssl
 import smtplib
@@ -72,7 +73,7 @@ class GetJob():
       text = self._replace_str(data, self.sms_path+data[3]+"_"+data[5]+".html")
       type = "html"
       
-    message.attach(MIMEText(text, type))    
+    message.attach(MIMEText(text, type, 'utf-8'))    
     #PDF file in binary mode
     with open(self.doc_path, "rb") as attach:
       #define mime type
@@ -91,7 +92,7 @@ class GetJob():
   
   def _replace_str(self, data, file):
     try:
-      with open(file, 'rwb') as text_file:
+      with codecs.open(file, 'rwb', encoding='utf-8') as text_file:
         read_file = text_file.read()
         rep = {
           "[name]": data[0], 
@@ -134,7 +135,7 @@ class GetJob():
     bulk_list = []
     for i, rowi in enumerate(bulk_reader):
       for j, rowj in enumerate(bulk_headlings):
-        bulk_headlings[j] = rowi[j]
+        bulk_headlings[j] = rowi[j].decode('utf-8')
       bulk_list.append(bulk_headlings[:len(bulk_headlings)])
     bulk_file.close()  
     return bulk_list
